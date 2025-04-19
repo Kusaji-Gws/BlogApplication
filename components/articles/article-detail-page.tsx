@@ -2,7 +2,10 @@ import { Prisma } from '@prisma/client'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import LikeButton from './like-button'
-import CommentList from './comment-list'
+import CommentList from '../comments/comment-list'
+import CommentInput from '../comments/comments-input'
+import { prisma } from '@/lib/prisma'
+import { auth } from '@clerk/nextjs/server'
 
 type ArticleDetailPageProps = {
     article: Prisma.ArticlesGetPayload<{
@@ -17,7 +20,28 @@ type ArticleDetailPageProps = {
         }
     }>
 }
-const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ article }) => {
+const ArticleDetailPage: React.FC<ArticleDetailPageProps> = async({ article }) => {
+    const comments=await prisma.comment.findMany({
+        where:{articleId:article.id},
+        include:{
+            author:{
+                select:{
+                    name:true,
+                    email:true,
+                    imageUrl:true
+                }
+            }
+        }
+
+    })
+    const likes=await prisma.like.findMany({
+        where:{articleId:article.id}
+    })
+    const {userId}=await auth();
+    const user=await prisma.user.findUnique({
+        where:{clerkUserId:userId as string}
+    })
+    const isLiked:boolean=likes.some((like)=>like.userId===user?.id);
     return (
         <div className='min-h-screen bg-background'>
             <main className='container mx-auto py-12 px-4 sm:px-6 lg:px-8'>
@@ -43,8 +67,9 @@ const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ article }) => {
                     </header>
                     <section className='mb-12 max-w-none' dangerouslySetInnerHTML={{__html:article.content}}/>
 
-                    <LikeButton/>
-                    <CommentList/>
+                    <LikeButton articleId={article.id} isLiked={isLiked} likes={likes}/>
+                    <CommentInput articleId={article.id}/>
+                    <CommentList comments={comments}/>
                 </article>
             </main>
         </div>
