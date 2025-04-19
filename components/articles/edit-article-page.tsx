@@ -16,7 +16,7 @@ type EditArticleProps = {
 }
 const EditArticlePage: React.FC<EditArticleProps> = ({ article }) => {
     const [content, setContent] = useState(article.content);
-    const [formState, action, isPending] = useActionState(editArticle.bind(null,article.id), { errors: {} });
+    const [formState, action, isPending] = useActionState(editArticle.bind(null, article.id), { errors: {} });
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -29,7 +29,7 @@ const EditArticlePage: React.FC<EditArticleProps> = ({ article }) => {
         <div className='max-w-4xl mx-auto p-6'>
             <Card>
                 <CardHeader>
-                    <CardTitle>Create New Article</CardTitle>
+                    <CardTitle>Edit Article</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className='space-y-6'>
@@ -52,7 +52,7 @@ const EditArticlePage: React.FC<EditArticleProps> = ({ article }) => {
                             <Input type='file' id='featureImage' name='featuredImage' accept='image/*' />
                             <div className='mb-4'>
                                 {
-                                   article.featuredImage &&( <img src={article.featuredImage} alt='featured-img' className='w-40 h-32 object-cover rounded-md' />)
+                                    article.featuredImage && (<img src={article.featuredImage} alt='featured-img' className='w-40 h-32 object-cover rounded-md' />)
                                 }
                             </div>
 

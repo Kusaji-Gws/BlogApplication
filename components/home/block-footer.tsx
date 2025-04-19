@@ -17,10 +17,10 @@ export function BlogFooter() {
               <span className="text-foreground">Code</span>
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Where ideas meet innovation. Dive into a world of insightful 
+              Where ideas meet innovation. Dive into a world of insightful
               articles written by passionate thinkers and industry experts.
             </p>
-            
+
             <div className="mt-6 flex gap-2">
               <Button variant="ghost" size="icon">
                 <Twitter className="h-5 w-5 text-muted-foreground" />
@@ -61,15 +61,15 @@ export function BlogFooter() {
             <h3 className="text-lg font-semibold text-foreground">Stay Updated</h3>
             <form className="flex flex-col gap-4">
               <div className="relative">
-                <Input 
-                  type="email" 
+                <Input
+                  type="email"
                   placeholder="Enter your email"
                   className="pl-10 pr-4 py-6"
                 />
                 <Mail className="h-5 w-5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
               </div>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full"
               >
                 Subscribe

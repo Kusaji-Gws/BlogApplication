@@ -91,10 +91,10 @@ export const editArticle = async (articleId: string, prevState: createArticlesFo
             });
             if (uploadResponse?.secure_url) {
                 imageUrl = uploadResponse.secure_url;
-            }else{
-                return{
-                    errors:{
-                        featuredImage:['failed to upload image, pleasr try again']
+            } else {
+                return {
+                    errors: {
+                        featuredImage: ['failed to upload image, pleasr try again']
                     }
                 }
             }
@@ -102,14 +102,14 @@ export const editArticle = async (articleId: string, prevState: createArticlesFo
         } catch (error) {
             return {
                 errors: {
-                    formErrors:['error uploading image,please try again']
+                    formErrors: ['error uploading image,please try again']
                 }
             }
         }
     }
 
-   
-   
+
+
     if (!imageUrl) {
         return {
             errors: {

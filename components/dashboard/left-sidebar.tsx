@@ -27,7 +27,7 @@ const LeftSidebar = () => {
                     <DialogTitle>
                         Menu
                     </DialogTitle>
-                    
+
                     <DashboardSidebar closeSheet={() => setIsOpen(false)} />
                 </SheetContent>
             </Sheet>

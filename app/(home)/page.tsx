@@ -5,6 +5,7 @@ import TopArticals from "@/components/home/top_articals";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -17,16 +18,20 @@ export default function Home() {
             <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-xl">Featured Articles</h2>
             <p>Discover our most popular and trending content</p>
           </div>
-        </div>
-        <TopArticals />
-        <div>
-          <Link href={'/articles'}>
-          <Button className="rounded-full hover:bg-gray-900 hover:text-white dark:bg-white dark:hover:text-gray-900">View all articless</Button>
-          </Link>
+          <Suspense fallback={<h1>Loading...</h1>}>
+          <TopArticals />
+          </Suspense>
+          
+
+          <div className="text-center mt-12">
+            <Link href={'/articles'}>
+              <Button className="rounded-full flex mx-auto mt-7 hover:bg-gray-900 hover:text-white dark:bg-white dark:hover:text-gray-900">View all articless</Button>
+            </Link>
+          </div>
         </div>
       </section>
-< BlogFooter/>
-      
+      < BlogFooter />
+
     </div>
   );
 }
