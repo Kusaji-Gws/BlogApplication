@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import { AllArticlesPageSkeleton } from "../articles/page";
 
 export default function Home() {
   return (
@@ -18,7 +19,7 @@ export default function Home() {
             <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-xl">Featured Articles</h2>
             <p>Discover our most popular and trending content</p>
           </div>
-          <Suspense fallback={<h1>Loading...</h1>}>
+          <Suspense fallback={<AllArticlesPageSkeleton/>}>
           <TopArticals />
           </Suspense>
           
