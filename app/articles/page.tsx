@@ -4,13 +4,23 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { prisma } from '@/lib/prisma'
+import { fetchArticleQuery } from '@/lib/query/fetch-article-by-query'
+import Link from 'next/link'
 import React, { Suspense } from 'react'
 
 type SearchPageProps = {
-  searchParams: Promise<{ search?: string }>
+  searchParams: Promise<{ search?: string, page: string }>
 }
+
+const ITEMS_PER_PAGE = 3
 const page: React.FC<SearchPageProps> = async ({ searchParams }) => {
-  const searchText = (await searchParams).search || ""
+  const searchText = (await searchParams).search || "";
+  const currentPage = Number((await searchParams).page) || 1;
+  const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+  const take = ITEMS_PER_PAGE;
+  const { articles, total } = await fetchArticleQuery(searchText, skip, take);
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+
   return (
     <div className='min-h-screen bg-background'>
       <main className='container mx-auto px-4 py-12 sm:px-6 lg:text-5xl'>
@@ -18,17 +28,27 @@ const page: React.FC<SearchPageProps> = async ({ searchParams }) => {
           <h1 className='text-4xl font-bold sm:text-5xl'>All Articles</h1>
 
           <ArticleSearchInput />
-          <Suspense fallback={<AllArticlesPageSkeleton/>}>
-            <AllArticlePage searchText={searchText} />
+          <Suspense fallback={<AllArticlesPageSkeleton />}>
+            <AllArticlePage articles={articles} />
           </Suspense>
         </div>
 
         <div className="mt-12 flex justify-center gap-2">
-          <Button variant={'ghost'} size={'sm'}>← Prev</Button>
-          <Button variant={'ghost'} size={'sm'}>1</Button>
-          <Button variant={'ghost'} size={'sm'}>2</Button>
-          <Button variant={'ghost'} size={'sm'}>3</Button>
-          <Button variant={'ghost'} size={'sm'}>Next →</Button>
+          <Link href={`?search=${searchText}&page=${currentPage - 1}`} passHref>
+            <Button disabled={currentPage===1} variant={'ghost'} size={'sm'}>← Prev</Button>
+          </Link>
+          {
+            Array.from({length:totalPages}).map((_,index)=>(
+              <Link key={index} href={`?search=${searchText}&page=${index+1}`} passHref>
+                          <Button variant={`${currentPage === index+1 ? 'destructive' :'ghost'}`} size={'sm'}>{index+1}</Button>
+
+              </Link>
+            ))
+          }
+          
+          <Link href={`?search=${searchText}&page=${currentPage + 1}`} passHref>
+          <Button disabled={currentPage===totalPages} variant={'ghost'} size={'sm'}>Next →</Button>
+          </Link>
         </div>
       </main>
     </div>

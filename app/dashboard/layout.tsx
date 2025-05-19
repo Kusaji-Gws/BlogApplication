@@ -1,8 +1,10 @@
 import LeftSidebar from '@/components/dashboard/left-sidebar'
+import { Protect } from '@clerk/nextjs'
 import React from 'react'
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-  return (
+  return  (
+    <Protect>
     <div className="min-h-screen w-full">
       <div className='flex'>
         <LeftSidebar />
@@ -10,6 +12,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
     </div>
+    </Protect>
   )
 }
 
